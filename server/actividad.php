@@ -1,3 +1,35 @@
+<?php
+	require_once '_bdconfig.php';
+	require_once '_mysql.php';
+
+	$slugtaller = $_GET['slug'];
+	if (isset($slugtaller)) {
+		// Conectar a la base de datos
+		$mysql = new MySQL(BD_HOST, BD_USER, BD_PASS, BD_NAME);
+
+		// Buscar el taller correspondiente
+		$slugtaller = $mysql->blindar(stripslashes($slugtaller));
+		$taller = $mysql->ejecutar("SELECT id, nombre, descripcion, ponente, horainicio, horafin, ubicacion, cupo, sobrecupo" . 
+			" FROM talleres WHERE abrev='" . $slugtaller . "'");
+
+		// Revisar si se encontró un taller con la abreviación necesaria
+		if ($taller !== FALSE) {
+			$taller = $taller->fetch_assoc();
+			$horario = date("G:i - ", strtotime($taller['horainicio'])) . date("G:i", strtotime($taller['horafin']))
+				. " horas";
+			$ponente = $mysql->ejecutar("SELECT organiza, usuario, biografia FROM ponentes WHERE id=" . $taller['ponente']);
+
+			// Verificar ocupación actual del taller y cupo máximo permitido para estilizar el botón correspondiente
+			$ocupacion = $mysql->ejecutar("SELECT COUNT(*) FROM usuariotaller WHERE idtaller=" . $taller['id']);
+			$maximo = $taller['cupo'] + $taller['sobrecupo'];
+			$puedeinscribir = $ocupacion->fetch_row() < $maximo ? ' disabled': '';
+
+			// Revisar si se encontró un ponente adscrito al taller
+			if ($ponente !== FALSE) 
+				$ponente = $ponente->fetch_assoc();
+			
+?>
+
 <!doctype html>
 <!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
 <!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
@@ -7,7 +39,7 @@
 <head>
 	<meta charset="utf-8">
 	
-	<title>Android básico - FLISoL Aragón 2015</title>
+	<title><?php echo ($taller['nombre']); ?> - FLISoL Aragón 2015</title>
 	<meta name="description" content="">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -24,7 +56,9 @@
 	<!-- Contenido principal -->
 	<div role="main" class="content">
 		<div class="content-heading">
-			<div class="container"><h1 class="heading">Android básico</h1></div>
+			<div class="container">
+				<h1 class="heading"><?php echo ($taller['nombre']); ?></h1>
+			</div>
 		</div>
 
 		<div class="content-inner">
@@ -40,22 +74,26 @@
 				<div class="tab-content">
 					<div class="tab-pane fade active in" id="infotaller">
 						
-		        		<h4>Android básico</h4>
-		        		<p>En este taller se darán a conocer los conceptos básicos necesarios para crear una aplicación móvil para el sistema operativo Android. Se espera que al finalizar el taller el asistente pueda crear su propia aplicación (sencilla).</p>
+		        		<h4><?php echo ($taller['nombre']); ?></h4>
+		        		<!-- Descripción del taller/conferencia -->
+		        		<?php echo ($taller['descripcion']); ?>
+		        		<!-- FIN Descripción del taller/conferencia -->
 
 		        		<h4>Ubicación y horario</h4>
-		        		<p>Centro de Apoyo Extracurricular (A-504)<br />
+		        		<p><?php echo ($taller['ubicacion']); ?><br />
 		        		Facultad de Estudios Superiores Aragón<br />
-		        		14:00 - 16:00 hrs</p>
+		        		<?=$horario?></p>
 
-		        		<!-- Lo siguiente solo debe aparecer si es un taller.
-		        		Si es taller, pero no hay cupo ni sobrecupo, debe aparecer deshabilitado. -->
-		        		<button class="btn btn-blue waves-button waves-effect waves-light" href="/registro/android-basico">Inscríbete ahora</button>
+		        		<!-- PENDIENTE: Reemplazar este botón con algo más adecuado si no es un taller -->
+		        		<?php echo "<button$puedeinscribir class=\"btn btn-blue waves-button waves-effect waves-light\""
+		        		. " href=\"/registro/android-basico\">Inscríbete ahora</button>" ?>
 					</div>
 					<div class="tab-pane fade" id="infoponente">
-						<img src="/img/ponentes/sebasgorro.png" />
-						<h2>Sebastián Téllez</h2>
-	        			<p>Apasionado por la tecnología. Imparte cursos de Android en Appcademy. Cuenta con amplios conocimientos de diversos lenguajes de programación así como de diversas tecnologías. Miembro de la Comunidad de Desarrollo Aragón (codear).</p>
+						<?php echo "<img src=\"/img/ponentes/{$ponente['usuario']}.png\" />"; ?>
+						<h2><?php echo ($ponente['organiza']); ?></h2>
+						<!-- Biografía del ponente -->
+						<?php echo ($ponente['biografia']); ?>
+	        			<!-- FIN Biografía del ponente -->
 					</div>
 				</div>
 			</div>
@@ -70,3 +108,15 @@
 
 </body>
 </html>
+
+<?php
+		}
+		// PENDIENTE: Fallar de una manera más agraciada (con un error 500 personalizado, por ejemplo)
+		else {
+			die('Error al procesar ponente.');
+		}
+	// PENDIENTE: Íbidem que arriba.
+	} else {
+		die('Error al procesar taller.');
+	}
+?>
