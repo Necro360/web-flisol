@@ -1,0 +1,22 @@
+#loading {
+	display: inline-block;
+	height: 100%;
+	margin-top: 24px;
+	margin-right: 16px;
+	vertical-align: middle;
+}
+
+#message, #message * {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+#message img {
+	width: 32px;
+	height: 32px;
+	vertical-align: middle;
+}
+
+#message p {
+	vertical-align: middle;
+}

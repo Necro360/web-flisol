@@ -22,7 +22,7 @@
 			// Verificar ocupación actual del taller y cupo máximo permitido para estilizar el botón correspondiente
 			$ocupacion = $mysql->ejecutar("SELECT COUNT(*) FROM usuariotaller WHERE idtaller=" . $taller['id']);
 			$maximo = $taller['cupo'] + $taller['sobrecupo'];
-			$puedeinscribir = $ocupacion->fetch_row() < $maximo ? ' disabled': '';
+			$puedeinscribir = $ocupacion->fetch_row()[0] < $maximo ? ' disabled': '';
 
 			// Revisar si se encontró un ponente adscrito al taller
 			if ($ponente !== FALSE) 
@@ -85,8 +85,8 @@
 		        		<?=$horario?></p>
 
 		        		<!-- PENDIENTE: Reemplazar este botón con algo más adecuado si no es un taller -->
-		        		<?php echo "<button$puedeinscribir class=\"btn btn-blue waves-button waves-effect waves-light\""
-		        		. " href=\"/registro/android-basico\">Inscríbete ahora</button>" ?>
+		        		<?php echo "<a$puedeinscribir class=\"btn btn-blue waves-button waves-effect waves-light\""
+		        		. " href=\"/registro/android-basico\">Inscríbete ahora</a>" ?>
 					</div>
 					<div class="tab-pane fade" id="infoponente">
 						<?php echo "<img src=\"/img/ponentes/{$ponente['usuario']}.png\" />"; ?>

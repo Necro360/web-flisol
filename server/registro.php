@@ -6,41 +6,39 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
 <head>
 	<meta charset="utf-8">
-	
+
 	<title>Registro - FLISoL Aragón 2015</title>
 	<meta name="description" content="Página de registro a talleres del FLISoL Aragón 2015.">
-	
+
 	<!-- Mobile viewport optimized: h5bp.com/viewport -->
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
-	
-	<link rel="stylesheet" media="screen" href="css/superfish.css" /> 
-	<link rel="stylesheet" href="css/nivo-slider.css" media="all"  /> 
-	<link rel="stylesheet" href="css/tweet.css" media="all"  />
+
 	<link rel="stylesheet" href="/css/material/base.min.css" />
-	<link rel="stylesheet" media="all" href="css/lessframework.css"/>
+	<link rel="stylesheet" media="all" href="/css/registro.css"/>
 </head>
 <body class="page-blue">
 
 	<!-- Encabezado y barra de navegación. -->
 	<?php include 'encabeza.php'; ?>
 	<!-- FIN Encabezado, barra navegación -->
-	
-	
+
+
 	<!-- Contenido principal -->
 	<div class="content">
 		<div class="content-heading">
 			<div class="container">
-				<h3>Regístrate a nuestros talleres</h3>
+				<h1 class="heading">Regístrate a nuestros talleres</h1>
 			</div>
 		</div>
 
 		<div class="content-inner">
 			<div class="container">
-				<form class="form" id="contactForm" action="#" method="post">
+				<form class="form" id="talleresForm" action="/server/intentRegistro.php" method="post">
 					<fieldset>
 						<legend>Registro</legend>
 
-						<p>Si ya registraste un taller, solo deberás introducir tu correo y el taller que deseas inscribir.</p>
+						<p>Si ya registraste un taller, solo deberás introducir tu correo y el taller que deseas inscribir.<br />
+						Todos los campos son obligatorios. ¡Te esperamos el 28 de abril, no faltes!</p>
 
 						<div class="form-group form-group-label control-highlight">
 							<div class="row">
@@ -68,21 +66,22 @@
 								</div>
 							</div>
 						</div>
-						
+
 						<div class="form-group form-group-label control-highlight">
 							<div class="row">
 								<div class="col-lg-6 col-sm-8">
-									<label class="floating-label" for="universidad">Institución</label>
-									<input class="form-control" name="universidad"  id="float-text" type="text" />
+									<label class="floating-label" for="institucion">Institución</label>
+									<input class="form-control" name="institucion"  id="float-text" type="text" />
 								</div>
 							</div>
 						</div>
-						
+
 						<div class="form-group form-group-label">
 							<div class="row">
 								<div class="col-lg-6 col-sm-8">
 									<label class="floating-label" for="taller">Taller</label>
 									<select class="form-control" name="taller" id="form-select">
+										<option value="null">Selecciona un taller...</option>
 										<option value="blender">Blender (10 - 12)</option>
 										<option value="nodejs">NodeJS (12 - 14)</option>
 										<option value="perimetral">Seguridad Perimetral (14 - 16)</option>
@@ -103,8 +102,14 @@
 
 					<div class="form-group-btn">
 						<button class="btn btn-blue waves-button waves-light waves-effect" type="submit" name="submit">Enviar</button>
+						<button class="btn btn-red waves-button waves-light waves-effect" type="reset" name="reset">Limpiar</button>
+						<div id="loading">
+							<img src="/img/loading.gif" />
+						</div>
 					</div>
-					
+
+					<div id="message">¡Muchas gracias por registrarte! Recibirás un correo de confirmación.</div>
+
 				</form>
 			</div>
 		</div>
@@ -117,6 +122,6 @@
 	<script src="/js/material/base.min.js"></script>
 	<script src="js/registro.js"></script>
 	<!-- end scripts -->
-		
+
 </body>
 </html>
