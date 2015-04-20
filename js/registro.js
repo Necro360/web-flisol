@@ -7,7 +7,7 @@ jQuery(document).ready(function($){
 	$("#talleresForm").on('submit', function() {
 		// ** Validación de datos **
 		var correo = $("[name=correo]").val();
-		if (correo == "" || !/[\w\.]+@[\w\.]+[^.]/.test(correo)) {
+		if (correo == "" || !/^[\w\.]+@[\w\.]+[^\.]$/.test(correo)) {
 			$("#message").show().text("Verifica que esté escrito (correctamente) tu correo.");
 			$("[name=correo]").focus();
 			return false;
@@ -71,9 +71,11 @@ jQuery(document).ready(function($){
 			$("[name=submit]").removeAttr('disabled');
 		})
 
-		.error(function() {
-			$("#loading").show().text("Comprueba tu conexión e inténtalo de nuevo.");
-		})
+		/*.error(function() {
+			$("#message").show().text("Comprueba tu conexión e inténtalo de nuevo.");
+		})*/;
+
+		return false;
 	});
 
 $("#talleresForm").on('reset', function() {

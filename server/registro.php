@@ -120,7 +120,7 @@
 	<?php include 'pie.php'; ?>
 
 	<script src="/js/material/base.min.js"></script>
-	<script src="js/registro.js"></script>
+	<script src="/js/registro.js"></script>
 	<!-- end scripts -->
 
 </body>

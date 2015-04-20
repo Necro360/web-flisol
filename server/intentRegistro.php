@@ -30,7 +30,7 @@
 
 	// Comprobación rápida de datos
 	// (la comprobación real la debemos realizar en *registro.php*)
-	if (!empty($_POST['correo']) && preg_match("^[\w\.]+@[\w\.]+[^.]$", $_POST['correo']) &&
+	if (!empty($_POST['correo']) && preg_match("/^[\w\.]+@[\w\.]+[^\.]$/", $_POST['correo']) &&
 		!empty($_POST['nombre']) &&
 		!empty($_POST['apellidos']) &&
 		!empty($_POST['institucion']) &&
@@ -53,12 +53,60 @@
 		// Obtener el id del usuario, si no existe, crear el registro y obtener su id
 		$idusuario = usuarioExiste($correo);
 		if ($idusuario != -1) {
-
+			if ($mysql->ejecutar("INSERT INTO usuarios VALUES (null, '$nombre', '$apellidos', '$correo', '$institucion')")) {
+				$idusuario = $mysql->ejecutar("SELECT id FROM ususarios WHERE correoelec='" . $correo . "'")->fetch_row()[0];
+			}
+			else {
+				respuesta(false, 'Error interno de la base de datos.');
+			}
 		}
+
+		// Chequeo de abusivos
+		$abusivo = ($mysql->ejecutar("SELECT COUNT(*) FROM usuariotaller WHERE idtaller={$infotaller['id']} AND " .
+			"idusuario=$idusuario")->fetch_row()[0]) >= 1;
+
+		if ($abusivo)
+			respuesta(false, 'Ya te has inscrito a este taller, tramposo.');
+
+		// Crear el registro relacionando el usuario y el taller entre sí
+		$ocupacion = $mysql->ejecutar("SELECT COUNT(*) FROM usuariotaller WHERE idtaller={$infotaller['id']}")->fetch_row()[0];
+		$ensobrecupo = ($ocupacion < $infotaller['cupo']) ? 0 : 1;
+
+		$resultado = $mysql->ejecutar("INSERT INTO usuariotaller VALUES ($idusuario, {$infotaller['id']}, CURRENT_TIMESTAMP(), $ensobrecupo");
+		
+		// Enviar el correo necesario de acuerdo al valor de $ensobrecupo
+		$cabeceras = "MIME-Version: 1.0;\r\n" .
+			"Content-Type: text/html; charset=utf-8\r\n" .
+			"From: FLISoL Aragón <contacto@flisolaragon.com.mx>";
+		if (!$ensobrecupo) {
+			$asunto = "Confirmación de registro";
+
+			$mensaje  = "<p>¡Hola, <b>$nombre</b>!,</p>";
+			$mensaje .= "<p>Este mensaje confirma que has quedado registrado correctamente al siguiente taller:</p>";
+			$mensaje .= "<p><b>Título:</b> {$infotaller['nombre']}<br /><b>Horario:</b>$horario</p>"
+			$mensaje .= "<p>¡Nos vemos el martes 28 de Abril!<br />No faltes</p>";
+		}
+		else {
+			$asunto = "Lista de espera";
+
+			$mensaje  = "<p>¡Hola, <b>$nombre</b>!,</p>";
+			$mensaje .= "<p>Lamentablemente el taller: " . $infotaller['nombre'] . " ha tenido mucha demanda ";
+			$mensaje .= "y no hemos podido asegurar tu lugar, quedarás en la lista de espera.</p>";
+			$mensaje .= "<p>De todas formas estás invitado a las grandiosas platicas que tendremos durante todo el día ";
+			$mensaje .= "y a los demás talleres que podrás checar en la web de <a href='http://flisolaragon.com.mx'>FLISoL Aragón</a></p>";
+			$mensaje .= "<p>¡Nos vemos el martes 28 de Abril!<br />No faltes</p>";
+		}
+
+		if ($resultado)
+			mail($correo, $asunto, $mensaje, $encabezados);
+	
+		$mysql->desconectar();
 	}
 
-	else
+	else {
+		//echo preg_last_error();
 		respuesta(false, 'Rellena el formulario completamente para continuar.');
+	}
 	
 
 	function usuarioExiste($correo) {
