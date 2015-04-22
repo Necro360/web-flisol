@@ -9,7 +9,7 @@
 	# Actividades
 	#RewriteRule ^actividades$ /actividades/ [R=301]
 	#RewriteRule ^actividades/$ /server/actividades.php
-	RewriteRule ^actividades/([a-z]+)$ /server/actividad.php?slug=$1 [L]
+	RewriteRule ^actividades/([a-z\d-]+)$ /server/actividad.php?slug=$1 [L]
 	#
 	# Acerca de y registro
 	#RewriteRule ^acercade$ /acerca.php [L]
