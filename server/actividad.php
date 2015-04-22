@@ -22,7 +22,7 @@
 			// Verificar ocupación actual del taller y cupo máximo permitido para estilizar el botón correspondiente
 			$ocupacion = $mysql->ejecutar("SELECT COUNT(*) FROM usuariotaller WHERE idtaller=" . $taller['id']);
 			$maximo = $taller['cupo'] + $taller['sobrecupo'];
-			$puedeinscribir = $ocupacion->fetch_row()[0] < $maximo ? ' disabled': '';
+			$puedeinscribir = $ocupacion->fetch_row() < $maximo ? ' disabled': '';
 
 			// Revisar si se encontró un ponente adscrito al taller
 			if ($ponente !== FALSE) 
