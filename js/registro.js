@@ -27,10 +27,10 @@ jQuery(document).ready(function($){
 			return false;
 		}
 
-		var universidad = $("[name=universidad]").val();
-		if (universidad == "") {
+		var institucion = $("[name=institucion]").val();
+		if (institucion == "") {
 			$("#messsage").show().text("Tu institución es necesaria.");
-			$("[name=universidad]").focus();
+			$("[name=institucion]").focus();
 			return false;
 		}
 
@@ -106,7 +106,7 @@ $("#talleresForm").on('reset', function() {
 			.done(function(data, textStatus) {
 				$("[name=nombre]").val(data.nombre);
 				$("[name=apellidos]").val(data.apellidos);
-				$("[name=institucion").val(data.institucion);
+				$("[name=institucion]").val(data.institucion);
 				$("[name=correo], [name=nombre], [name=apellidos], [name=institucion]").attr('disabled', '').parent()
 					.parent().parent().addClass('control-highlight');
 			})
@@ -135,7 +135,7 @@ $("#talleresForm").on('reset', function() {
 		// data string
 		var dataString = 'nombre='+ nombre
 						+ '&correo=' + correo
-						+ '&universidad=' + universidad
+						+ '&universidad=' + institucion
 						+ '&taller=' + taller;
 
 		// ajax
