@@ -89,17 +89,24 @@
 		        		. " href=\"/registro/android-basico\">Inscríbete ahora</a>" ?>
 					</div>
 					<div class="tab-pane fade" id="infoponente">
-						<?php echo "<img src=\"/img/ponentes/{$ponente['usuario']}.png\" />"; ?>
-						<h2><?php echo ($ponente['organiza']); ?></h2>
-						<!-- Biografía del ponente -->
-						<?php echo ($ponente['biografia']); ?>
-	        			<!-- FIN Biografía del ponente -->
+						<p class="text-center">
+							<span class="avatar avatar-inline avatar-lg">
+								<?php echo "<img src=\"/img/ponentes/{$ponente['usuario']}.png\" />"; ?>
+							</span>
+						</p>
+						<div class="text-center">
+							<h2><?php echo ($ponente['organiza']); ?></h2>
+							<!-- Biografía del ponente -->
+							<p>
+								<?php echo ($ponente['biografia']); ?>
+							</p>
+		        			<!-- FIN Biografía del ponente -->
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-	<!-- FIN Contenido principal -->
+		<!-- FIN Contenido principal -->
 
 	<!-- Pie de página. -->
 	<?php include 'pie.php' ?>
