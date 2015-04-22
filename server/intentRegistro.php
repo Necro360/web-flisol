@@ -30,26 +30,26 @@
 
 	// Comprobación rápida de datos
 	// (la comprobación real la debemos realizar en *registro.php*)
-	if (!empty($_GET['correo']) &&
-		!empty($_GET['nombre']) &&
-		!empty($_GET['apellidos']) &&
-		!empty($_GET['institucion']) &&
-		!empty($_GET['taller'])) {
+	if (!empty($_POST['correo']) &&
+		!empty($_POST['nombre']) &&
+		!empty($_POST['apellidos']) &&
+		!empty($_POST['institucion']) &&
+		!empty($_POST['taller'])) {
 
 		// Blindaje de datos
-		$correo = $mysql->blindar(stripslashes($_GET['correo']));
-		$nombre = $mysql->blindar(stripslashes($_GET['nombre']));
-		$apellidos = $mysql->blindar(stripslashes($_GET['apellidos']));
-		$institucion = $mysql->blindar(stripslashes($_GET['institucion']));
-		$taller = $mysql->blindar(stripslashes($_GET['taller']));
+		$correo = $mysql->blindar(stripslashes($_POST['correo']));
+		$nombre = $mysql->blindar(stripslashes($_POST['nombre']));
+		$apellidos = $mysql->blindar(stripslashes($_POST['apellidos']));
+		$institucion = $mysql->blindar(stripslashes($_POST['institucion']));
+		$taller = $mysql->blindar(stripslashes($_POST['taller']));
 
 		// Obtener la información del taller al que se intenta inscribir
-		$infotaller = $mysql->ejecutar("SELECT id, nombre, horainicio, horafin, cupo FROM talleres WHERE abrev='" . $taller . "'");
+		$infotaller = $mysql->ejecutar("SELECT id, nombre, cupo FROM talleres WHERE abrev='" . $taller . "'");
 		if (!$infotaller = $infotaller->fetch_assoc())
 			respuesta(false, 'El taller al cual te intentas inscribir no existe.');
 
 		// Obtener el id del usuario, si no existe, crear el registro y obtener su id
-		$idusuario = usuarioExiste($correo);		
+		$idusuario = usuarioExiste($correo);	
 		if ($idusuario === -1) {
 			if ($mysql->ejecutar("INSERT INTO usuarios VALUES (null, '$nombre', '$apellidos', '$correo', '$institucion')")) {
 				$idusuario = $mysql->ejecutar("SELECT id FROM usuarios WHERE correoelec='$correo'")->fetch_row();
@@ -58,7 +58,6 @@
 				respuesta(false, 'Error interno de la base de datos.');
 			}
 		}
-
 		$idusuario = $idusuario[0];
 
 		// Chequeo de abusivos

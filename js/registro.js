@@ -104,7 +104,6 @@ jQuery(document).ready(function($){
 
 			// En caso de que la solicitud sea existosa
 			.done(function(data, textStatus) {
-				console.log(data);
 				if (data !== null) {
 					$("[name=nombre]").val(data.nombre);
 					$("[name=apellidos]").val(data.apellidos);
