@@ -54,7 +54,7 @@
 				<p>A tal fin, las diversas comunidades locales de software libre (en cada país/ciudad/localidad), organizan simultáneamente eventos en los que se instala, de manera gratuita y totalmente legal, software libre en las computadoras que llevan los asistentes. Además, en forma paralela, se ofrecen charlas, ponencias y talleres, sobre temáticas locales, nacionales y latinoamericanas en torno al Software Libre, en toda su gama de expresiones: artística, académica, empresarial y social.<p>
 				
 				<h2 class="text-center">4to FLISoL FES Aragón</h2>
-				<p>El Festival Latinoamericano de Instalación de Software Libre (FLISoL) nace de las ganas de un grupo de alumnos apoyados en un ex alumno en difundir el conocimiento y el uso de herramientas de Software Libre. Su primera edición nace en 2012 con un aproximado de 23 horas de contenidos y el respectivo Install Fest. Su realización continuó para el 2013 con 28 horas de contenido y ahora en 2014 estamos por llevar a cabo la tercera edición en la Facultad de Estudios Superiores Aragón con un aproximado de 29 horas de contenido.</p>
+				<p>El Festival Latinoamericano de Instalación de Software Libre (FLISoL) nace de las ganas de un grupo de alumnos apoyados en un ex alumno en difundir el conocimiento y el uso de herramientas de Software Libre. Su primera edición nace en 2012 con un aproximado de 23 horas de contenidos y el respectivo Install Fest. Su realización continuó para el 2013 con 28 horas de contenido, continuamos de igual manera en el 2014 con 29 horas de contenido y ahora en 2015 estamos por llevar a cabo la cuarta edición en la Facultad de Estudios Superiores Aragón con un aproximado de 27 horas de contenido.</p>
 			</div>
 		</div>
 	</div>
