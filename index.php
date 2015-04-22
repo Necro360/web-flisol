@@ -45,7 +45,7 @@
 
 		<div class="content-inner">
 			<div class="container">
-				<p style="text-align: center"><img id="logo" src="/img/logo_flisol.png" /></p>
+				<p style="text-align: center"><img id="logo" src="/img/logo_flisol.png" alt="Logo FLISoL" /></p>
 				<p>Este evento lo debes marcar en tu calendario: el <strong>28 de abril</strong> se realiza la 4ª edición del <strong>Festival Latinoamericano de Instalación de Software Libre</strong>, con sede en la Facultad de Estudios Superiores Aragón.</p>
 				<p>Tendremos diversas conferencias y talleres referentes a <strong>desarrollo</strong>, <strong>hacking</strong> y <strong>software libre</strong>, distribuidas al interior de la Facultad.</p>
 				<p>Próximamente se habilitará el registro para los talleres, así que mantente pendiente de esta página y no olvides registrarte.<p>

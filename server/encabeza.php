@@ -11,7 +11,7 @@
 		</ul>
 		<span class="header-logo">
 			<a href="/">
-				<img src="/img/logo_header.png" style="width:32px;height:32px" />
+				<img src="/img/logo_header.png" style="width:32px;height:32px" alt="Logo FLISoL" />
 				FLISoL Aragón 2015
 			</a>
 		</span>

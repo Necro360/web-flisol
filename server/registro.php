@@ -44,7 +44,7 @@
 							<div class="row">
 								<div class="col-lg-6 col-sm-8">
 									<label class="floating-label" for="correo">Email</label>
-									<input name="correo" id="float-text" type="text" class="form-control" />
+									<input name="correo" id="correo" type="email" class="form-control" />
 								</div>
 							</div>
 						</div>
@@ -53,7 +53,7 @@
 							<div class="row">
 								<div class="col-lg-6 col-sm-8">
 									<label class="floating-label" for="nombre">Nombre</label>
-									<input class="form-control" id="float-text" name="nombre" type="text" />
+									<input class="form-control" id="nombre" name="nombre" type="text" />
 								</div>
 							</div>
 						</div>
@@ -62,7 +62,7 @@
 							<div class="row">
 								<div class="col-lg-6 col-sm-8">
 									<label class="floating-label" for="apellidos">Apellidos</label>
-									<input class="form-control" id="float-text" name="apellidos" type="text" />
+									<input class="form-control" id="apellidos" name="apellidos" type="text" />
 								</div>
 							</div>
 						</div>
@@ -71,7 +71,7 @@
 							<div class="row">
 								<div class="col-lg-6 col-sm-8">
 									<label class="floating-label" for="institucion">Institución</label>
-									<input class="form-control" name="institucion"  id="float-text" type="text" />
+									<input class="form-control" name="institucion"  id="institucion" type="text" />
 								</div>
 							</div>
 						</div>
@@ -80,7 +80,7 @@
 							<div class="row">
 								<div class="col-lg-6 col-sm-8">
 									<label class="floating-label" for="taller">Taller</label>
-									<select class="form-control" name="taller" id="form-select">
+									<select class="form-control" name="taller" id="taller">
 										<option value="null">Selecciona un taller...</option>
 										<option value="github">GitHub (10:00 - 11:00)</option>
 										<option value="animacion-html5">Animación con HTML5 y GSAP (10:00 - 11:30)</option>
@@ -104,7 +104,7 @@
 						<button class="btn btn-blue waves-button waves-light waves-effect" type="submit" name="submit">Enviar</button>
 						<button class="btn btn-red waves-button waves-light waves-effect" type="reset" name="reset">Limpiar</button>
 						<div id="loading">
-							<img src="/img/loading.gif" />
+							<img src="/img/loading.gif" alt="Cargando" />
 						</div>
 					</div>
 
