@@ -86,7 +86,7 @@
 
 		        		<!-- PENDIENTE: Reemplazar este botón con algo más adecuado si no es un taller -->
 		        		<?php echo "<a$puedeinscribir class=\"btn btn-blue waves-button waves-effect waves-light\""
-		        		. " href=\"/registro/android-basico\">Inscríbete ahora</a>" ?>
+		        		. " href=\"/registro\">Inscríbete ahora</a>" ?>
 					</div>
 					<div class="tab-pane fade" id="infoponente">
 						<p class="text-center">
