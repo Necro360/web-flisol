@@ -24,7 +24,7 @@
 			<div class="menu-content">
 				<ul class="nav">
 					<li><a href="/acercade">Acerca de</a></li>
-					<li><a href="/actividades/">Actividades</a></li>
+					<li><a href="/actividades">Actividades</a></li>
 					<li><a href="/registro">Registro</a></li>
 					<li><a href="/contacto">Contacto</a></li>
 				</ul>
