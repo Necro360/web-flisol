@@ -15,7 +15,7 @@
 
 	// Devolver datos de autocompletado si es necesario
 	if (isset($_POST['autocompletefrom'])) {
-		$returndata = $mysql->ejecutar("SELECT nombre, apellidos, institucion FROM usuarios WHERE correoelec='" .
+		$returndata = $mysql->ejecutar("SELECT nombre, apellidos, institucion FROM usuarios WHERE correoelec = '" .
 			$mysql->blindar(stripslashes($_POST['autocompletefrom'])) . "'");
 
 		if ($returndata !== false) {
@@ -54,7 +54,7 @@
 		$idusuario = usuarioExiste($correo);
 		if ($idusuario != -1) {
 			if ($mysql->ejecutar("INSERT INTO usuarios VALUES (null, '$nombre', '$apellidos', '$correo', '$institucion')")) {
-				$idusuario = $mysql->ejecutar("SELECT id FROM ususarios WHERE correoelec='" . $correo . "'")->fetch_row()[0];
+				$idusuario = $mysql->ejecutar("SELECT id FROM ususarios WHERE correoelec='" . $correo . "'")->fetch_row();
 			}
 			else {
 				respuesta(false, 'Error interno de la base de datos.');
@@ -63,13 +63,13 @@
 
 		// Chequeo de abusivos
 		$abusivo = ($mysql->ejecutar("SELECT COUNT(*) FROM usuariotaller WHERE idtaller={$infotaller['id']} AND " .
-			"idusuario=$idusuario")->fetch_row()[0]) >= 1;
+			"idusuario=$idusuario")->fetch_row()) >= 1;
 
 		if ($abusivo)
 			respuesta(false, 'Ya te has inscrito a este taller, tramposo.');
 
 		// Crear el registro relacionando el usuario y el taller entre sí
-		$ocupacion = $mysql->ejecutar("SELECT COUNT(*) FROM usuariotaller WHERE idtaller={$infotaller['id']}")->fetch_row()[0];
+		$ocupacion = $mysql->ejecutar("SELECT COUNT(*) FROM usuariotaller WHERE idtaller={$infotaller['id']}")->fetch_row();
 		$ensobrecupo = ($ocupacion < $infotaller['cupo']) ? 0 : 1;
 
 		$resultado = $mysql->ejecutar("INSERT INTO usuariotaller VALUES ($idusuario, {$infotaller['id']}, CURRENT_TIMESTAMP(), $ensobrecupo");
@@ -83,7 +83,7 @@
 
 			$mensaje  = "<p>¡Hola, <b>$nombre</b>!,</p>";
 			$mensaje .= "<p>Este mensaje confirma que has quedado registrado correctamente al siguiente taller:</p>";
-			$mensaje .= "<p><b>Título:</b> {$infotaller['nombre']}<br /><b>Horario:</b>$horario</p>"
+			$mensaje .= "<p><b>Título:</b> {$infotaller['nombre']}<br /><b>Horario:</b>$horario</p>";
 			$mensaje .= "<p>¡Nos vemos el martes 28 de Abril!<br />No faltes</p>";
 		}
 		else {
@@ -112,7 +112,7 @@
 	function usuarioExiste($correo) {
 		$usuarioexiste = $mysql->ejecutar("SELECT id FROM usuarios WHERE correoelec='" . $correo . "'");
 		if ($usuarioexiste !== false)
-			return $usuarioexiste->fetch_row()[0];
+			return $usuarioexiste->fetch_row();
 		else
 			return -1;
 	}
