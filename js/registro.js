@@ -49,6 +49,7 @@ jQuery(document).ready(function($){
 		$.ajax({
 			type: "POST",
 			url: "/server/intentRegistro.php",
+			dataType: 'json',
 			data: {
 				correo: $("[name=correo]").val(),
 				nombre: $("[name=nombre]").val(),
@@ -59,11 +60,12 @@ jQuery(document).ready(function($){
 		})
 
 		.done(function(data) {
-			var json = $.parseJSON(data);
-			if (json.success)
+			if (data.success) {
 				$("[name=submit]").attr('disable', '');
-
-			$("#loading").show().text(json.message);
+			}
+				
+			$("#loading").hide();
+			$("#message").show().text(data.message);
 		})
 
 		.always(function() {

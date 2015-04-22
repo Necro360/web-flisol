@@ -82,18 +82,18 @@
 									<label class="floating-label" for="taller">Taller</label>
 									<select class="form-control" name="taller" id="form-select">
 										<option value="null">Selecciona un taller...</option>
-										<option value="blender">Blender (10 - 12)</option>
-										<option value="nodejs">NodeJS (12 - 14)</option>
-										<option value="perimetral">Seguridad Perimetral (14 - 16)</option>
-										<option value="hackios">Hackeo iOS y Android (16 - 18)</option>
-										<option value="bb10">BlackBerry 10 (10 - 12)</option>
-										<option value="librecad">LibreCAD (12 - 14)</option>
-										<option value="android-1">Android básico (14 - 16)</option>
-										<option value="android-2">Android intermedio (16 - 18)</option>
-										<option value="videojuegos">Videojuegos (10 - 12)</option>
-										<option value="firefoxos-1">Firefox OS básico (12 - 14)</option>
-										<option value="firefoxos-2">Firefox OS intermedio (14 - 16)</option>
-										<option value="arduino">Arduino (16 - 18)</option>
+										<option value="github">GitHub (10:00 - 11:00)</option>
+										<option value="animacion-html5">Animación con HTML5 y GSAP (10:00 - 11:30)</option>
+										<option value="wordpress">Introducción a WordPress (10:00 - 12:00)</option>
+										<option value="appinventor">App Inventor iOS y Android (11:00 - 13:00)</option>
+										<option value="scratch">Scratch 10 (11:30 - 12:30)</option>
+										<option value="hack-windows">¿Sabes lo que instalas? Hackeando Windows en minutos (12:00 - 14:00)</option>
+										<option value="jdb2">JDB2 (13:00 - 15:00)</option>
+										<option value="videojuegos">Desarrollo de videojuegos (14:00 - 16:00)</option>
+										<option value="android">Desarrollo Android (14:00 - 16:00)</option>
+										<option value="elastix">VoIP Elastix (15:00 - 18:00)</option>
+										<option value="arduino">Arduino (16:00 - 18:00)</option>
+										<option value="phonegap">Aplicaciones multiplataforma (16:00 - 18:00)</option>
 									</select>
 								</div>
 							</div>
