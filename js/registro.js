@@ -52,7 +52,7 @@ jQuery(document).ready(function($){
 			data: {
 				correo: $("[name=correo]").val(),
 				nombre: $("[name=nombre]").val(),
-				appelidos: $("[name=apellidos]").val(),
+				apellidos: $("[name=apellidos]").val(),
 				institucion: $("[name=institucion]").val(),
 				taller: $("[name=taller]").val()
 			}
@@ -71,19 +71,19 @@ jQuery(document).ready(function($){
 			$("[name=submit]").removeAttr('disabled');
 		})
 
-		/*.error(function() {
+		.fail(function() {
 			$("#message").show().text("Comprueba tu conexión e inténtalo de nuevo.");
-		})*/;
+		});
 
 		return false;
 	});
 
-$("#talleresForm").on('reset', function() {
-	$("[name=correo], [name=nombre], [name=apellidos], [name=institucion]").removeAttr('disabled');
-	$("#message").hide();
-	$("[name=correo]").focus();
-	return true;
-})
+	$("#talleresForm").on('reset', function() {
+		$("[name=correo], [name=nombre], [name=apellidos], [name=institucion]").removeAttr('disabled');
+		$("#message").hide();
+		$("[name=correo]").focus();
+		return true;
+	});
 
 	// Autorrellenado del formulario
 	$("[name=correo]").on('blur', function() {
@@ -104,11 +104,14 @@ $("#talleresForm").on('reset', function() {
 
 			// En caso de que la solicitud sea existosa
 			.done(function(data, textStatus) {
-				$("[name=nombre]").val(data.nombre);
-				$("[name=apellidos]").val(data.apellidos);
-				$("[name=institucion]").val(data.institucion);
-				$("[name=correo], [name=nombre], [name=apellidos], [name=institucion]").attr('disabled', '').parent()
-					.parent().parent().addClass('control-highlight');
+				console.log(data);
+				if (data !== null) {
+					$("[name=nombre]").val(data.nombre);
+					$("[name=apellidos]").val(data.apellidos);
+					$("[name=institucion]").val(data.institucion);
+					$("[name=correo], [name=nombre], [name=apellidos], [name=institucion]").attr('disabled', '').parent()
+						.parent().parent().addClass('control-highlight');
+				}
 			})
 
 			.error(function() {})

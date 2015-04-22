@@ -30,49 +30,51 @@
 
 	// Comprobación rápida de datos
 	// (la comprobación real la debemos realizar en *registro.php*)
-	if (!empty($_POST['correo']) && preg_match("/^[\w\.]+@[\w\.]+[^\.]$/", $_POST['correo']) &&
-		!empty($_POST['nombre']) &&
-		!empty($_POST['apellidos']) &&
-		!empty($_POST['institucion']) &&
-		!empty($_POST['taller'])) {
+	if (!empty($_GET['correo']) &&
+		!empty($_GET['nombre']) &&
+		!empty($_GET['apellidos']) &&
+		!empty($_GET['institucion']) &&
+		!empty($_GET['taller'])) {
 
 		// Blindaje de datos
-		$correo = $mysql->blindar(stripslashes($_POST['correo']));
-		$nombre = $mysql->blindar(stripslashes($_POST['nombre']));
-		$apellidos = $mysql->blindar(stripslashes($_POST['apellidos']));
-		$institucion = $mysql->blindar(stripslashes($_POST['institucion']));
-		$taller = $mysql->blindar(stripslashes($_POST['taller']));
+		$correo = $mysql->blindar(stripslashes($_GET['correo']));
+		$nombre = $mysql->blindar(stripslashes($_GET['nombre']));
+		$apellidos = $mysql->blindar(stripslashes($_GET['apellidos']));
+		$institucion = $mysql->blindar(stripslashes($_GET['institucion']));
+		$taller = $mysql->blindar(stripslashes($_GET['taller']));
 
 		// Obtener la información del taller al que se intenta inscribir
-		$infotaller = $mysql->ejecutar("SELECT nombre, fechainicio, fechafin FROM talleres WHERE abrev='" . $taller);
-		if ($infotaller !== false)
-			$infotaller = $infotaller->fetch_assoc();
-		else 
+		$infotaller = $mysql->ejecutar("SELECT id, nombre, horainicio, horafin, cupo FROM talleres WHERE abrev='" . $taller . "'");
+		if (!$infotaller = $infotaller->fetch_assoc())
 			respuesta(false, 'El taller al cual te intentas inscribir no existe.');
 
 		// Obtener el id del usuario, si no existe, crear el registro y obtener su id
-		$idusuario = usuarioExiste($correo);
-		if ($idusuario != -1) {
+		$idusuario = usuarioExiste($correo);		
+		if ($idusuario === -1) {
 			if ($mysql->ejecutar("INSERT INTO usuarios VALUES (null, '$nombre', '$apellidos', '$correo', '$institucion')")) {
-				$idusuario = $mysql->ejecutar("SELECT id FROM ususarios WHERE correoelec='" . $correo . "'")->fetch_row();
+				$idusuario = $mysql->ejecutar("SELECT id FROM usuarios WHERE correoelec='$correo'")->fetch_row();
 			}
 			else {
 				respuesta(false, 'Error interno de la base de datos.');
 			}
 		}
 
+		$idusuario = $idusuario[0];
+
 		// Chequeo de abusivos
-		$abusivo = ($mysql->ejecutar("SELECT COUNT(*) FROM usuariotaller WHERE idtaller={$infotaller['id']} AND " .
-			"idusuario=$idusuario")->fetch_row()) >= 1;
+		$abusivo = $mysql->ejecutar("SELECT COUNT(*) FROM usuariotaller WHERE idtaller='" . $infotaller['id'] . "' AND " .
+			"idusuario='" . $idusuario . "'")->fetch_row();
+		$abusivo = $abusivo[0] >= 1;
 
 		if ($abusivo)
 			respuesta(false, 'Ya te has inscrito a este taller, tramposo.');
 
 		// Crear el registro relacionando el usuario y el taller entre sí
-		$ocupacion = $mysql->ejecutar("SELECT COUNT(*) FROM usuariotaller WHERE idtaller={$infotaller['id']}")->fetch_row();
+		$ocupacion = $mysql->ejecutar("SELECT COUNT(*) FROM usuariotaller WHERE idtaller='" . $infotaller['id'] . "'")->fetch_row();
+		$ocupacion = $ocupacion[0];
 		$ensobrecupo = ($ocupacion < $infotaller['cupo']) ? 0 : 1;
 
-		$resultado = $mysql->ejecutar("INSERT INTO usuariotaller VALUES ($idusuario, {$infotaller['id']}, CURRENT_TIMESTAMP(), $ensobrecupo");
+		$resultado = $mysql->ejecutar("INSERT INTO usuariotaller VALUES ('$idusuario', '{$infotaller['id']}', CURRENT_TIMESTAMP(), '$ensobrecupo')");
 		
 		// Enviar el correo necesario de acuerdo al valor de $ensobrecupo
 		$cabeceras = "MIME-Version: 1.0;\r\n" .
@@ -97,10 +99,12 @@
 			$mensaje .= "<p>¡Nos vemos el martes 28 de Abril!<br />No faltes</p>";
 		}
 
-		if ($resultado)
-			mail($correo, $asunto, $mensaje, $encabezados);
-	
 		$mysql->desconectar();
+
+		if ($resultado) {
+			if (mail($correo, $asunto, $mensaje, $encabezados))
+				respuesta(true, 'Registro exitoso');
+		}
 	}
 
 	else {
@@ -110,11 +114,13 @@
 	
 
 	function usuarioExiste($correo) {
+		$mysql = new MySQL(BD_HOST, BD_USER, BD_PASS, BD_NAME);
+		
 		$usuarioexiste = $mysql->ejecutar("SELECT id FROM usuarios WHERE correoelec='" . $correo . "'");
-		if ($usuarioexiste !== false)
-			return $usuarioexiste->fetch_row();
-		else
+		if (!$usuarioexiste = $usuarioexiste->fetch_row())
 			return -1;
+		
+		return $usuarioexiste;
 	}
 
 	function respuesta($success, $message) {
