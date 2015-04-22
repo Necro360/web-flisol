@@ -26,8 +26,7 @@
 
 			// Revisar si se encontró un ponente adscrito al taller
 			if ($ponente !== FALSE) 
-				$ponente = $ponente->fetch_assoc();
-			
+				$ponente = $ponente->fetch_assoc();			
 ?>
 
 <!doctype html>
@@ -91,7 +90,7 @@
 					<div class="tab-pane fade" id="infoponente">
 						<p class="text-center">
 							<span class="avatar avatar-inline avatar-lg">
-								<?php echo "<img src=\"/img/ponentes/{$ponente['usuario']}.png\" />"; ?>
+								<?php echo "<img src=\"/img/ponentes/{$ponente['usuario']}.png\" alt=\"{$ponente['organiza']}\" />"; ?>
 							</span>
 						</p>
 						<div class="text-center">
@@ -106,7 +105,8 @@
 				</div>
 			</div>
 		</div>
-		<!-- FIN Contenido principal -->
+	</div>
+	<!-- FIN Contenido principal -->
 
 	<!-- Pie de página. -->
 	<?php include 'pie.php' ?>
