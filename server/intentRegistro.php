@@ -44,7 +44,7 @@
 		$taller = $mysql->blindar(stripslashes($_POST['taller']));
 
 		// Obtener la información del taller al que se intenta inscribir
-		$infotaller = $mysql->ejecutar("SELECT id, nombre, cupo FROM talleres WHERE abrev='" . $taller . "'");
+		$infotaller = $mysql->ejecutar("SELECT id, nombre, horainicio, horafin, cupo FROM talleres WHERE abrev='" . $taller . "'");
 		if (!$infotaller = $infotaller->fetch_assoc())
 			respuesta(false, 'El taller al cual te intentas inscribir no existe.');
 
@@ -79,18 +79,19 @@
 		$cabeceras = "MIME-Version: 1.0;\r\n" .
 			"Content-Type: text/html; charset=utf-8\r\n" .
 			"From: FLISoL Aragón <contacto@flisolaragon.com.mx>";
-		if (!$ensobrecupo) {
+
+		if ($ensobrecupo === 0) {
 			$asunto = "Confirmación de registro";
 
-			$mensaje  = "<p>¡Hola, <b>$nombre</b>!,</p>";
+			$mensaje  = "<p>¡Hola, <b>". $nombre ."</b>!,</p>";
 			$mensaje .= "<p>Este mensaje confirma que has quedado registrado correctamente al siguiente taller:</p>";
-			$mensaje .= "<p><b>Título:</b> {$infotaller['nombre']}<br /><b>Horario:</b>$horario</p>";
+			$mensaje .= "<p><b>Título:</b>". $infotaller['nombre'] ."<br /><b>Horario:</b>". $infotaller['horainicio'] ."-". $infotaller['horafin'] ."</p>";
 			$mensaje .= "<p>¡Nos vemos el martes 28 de Abril!<br />No faltes</p>";
 		}
 		else {
 			$asunto = "Lista de espera";
 
-			$mensaje  = "<p>¡Hola, <b>$nombre</b>!,</p>";
+			$mensaje  = "<p>¡Hola, <b>". $nombre ."</b>!,</p>";
 			$mensaje .= "<p>Lamentablemente el taller: " . $infotaller['nombre'] . " ha tenido mucha demanda ";
 			$mensaje .= "y no hemos podido asegurar tu lugar, quedarás en la lista de espera.</p>";
 			$mensaje .= "<p>De todas formas estás invitado a las grandiosas platicas que tendremos durante todo el día ";
@@ -101,7 +102,7 @@
 		$mysql->desconectar();
 
 		if ($resultado) {
-			if (mail($correo, $asunto, $mensaje, $encabezados))
+			if (mail($correo, $asunto, $mensaje, $cabeceras))
 				respuesta(true, 'Registro exitoso');
 		}
 	}
