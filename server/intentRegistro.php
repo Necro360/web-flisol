@@ -7,6 +7,8 @@
 	require_once '_bdconfig.php';
 	require_once '_htmltag.php';
 	require_once '_mysql.php';
+	require_once '_class.smtp.php';
+	require_once '_class.phpmailer.php';
 
 	$mysql = new MySQL(BD_HOST, BD_USER, BD_PASS, BD_NAME);
 
@@ -74,11 +76,11 @@
 		$ensobrecupo = ($ocupacion < $infotaller['cupo']) ? 0 : 1;
 
 		$resultado = $mysql->ejecutar("INSERT INTO usuariotaller VALUES ('$idusuario', '{$infotaller['id']}', CURRENT_TIMESTAMP(), '$ensobrecupo')");
+
+		$mysql->desconectar();
 		
 		// Enviar el correo necesario de acuerdo al valor de $ensobrecupo
-		$cabeceras = "MIME-Version: 1.0;\r\n" .
-			"Content-Type: text/html; charset=utf-8\r\n" .
-			"From: FLISoL Aragón <contacto@flisolaragon.com.mx>";
+		$mail = new PHPMailer;
 
 		if ($ensobrecupo === 0) {
 			$asunto = "Confirmación de registro";
@@ -99,11 +101,27 @@
 			$mensaje .= "<p>¡Nos vemos el martes 28 de Abril!<br />No faltes</p>";
 		}
 
-		$mysql->desconectar();
+		$mail->setFrom('contacto@flisolaragon.com.mx', 'FLISoL Aragón');
+		$mail->addAddress($correo, $nombre);
+		$mail->Subject = $asunto;
+		$mail->Body = $mensaje;
+
+		$mail->WordWrap = 50;
+		$mail->IsHTML(true);
+		$mail->CharSet = 'UTF-8';
+
+		$mail->isSMTP();
+		$mail->Host = 'smtp.sendgrid.net';
+		$mail->Port = 25;
+		$mail->SMTPAuth = true;
+		$mail->Username = 'flisol2015';
+		$mail->Password = '';
 
 		if ($resultado) {
-			if (mail($correo, $asunto, $mensaje, $cabeceras))
+			if ($mail->send())
 				respuesta(true, 'Registro exitoso');
+			else
+				$mail->ErrorInfo;
 		}
 	}
 
