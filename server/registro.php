@@ -1,3 +1,12 @@
+<?php
+	require_once '_bdconfig.php';
+	require_once '_mysql.php';
+
+	$mysql = new MySQL(BD_HOST, BD_USER, BD_PASS, BD_NAME);
+
+	$talleres = $mysql->ejecutar("SELECT t.nombre, t.abrev, t.horainicio, t.horafin, t.cupo, count(u.idtaller) AS ocupacion FROM talleres AS t LEFT JOIN usuariotaller AS u ON (t.id = u.idtaller) GROUP BY t.id");
+?>
+
 <!doctype html>
 <!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
 <!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
@@ -82,18 +91,13 @@
 									<label class="floating-label" for="taller">Taller</label>
 									<select class="form-control" name="taller" id="taller">
 										<option value="null">Selecciona un taller...</option>
-										<option value="github">GitHub (10:00 - 11:00)</option>
-										<option value="animacion-html5">Animación con HTML5 y GSAP (10:00 - 11:30)</option>
-										<option value="wordpress">Introducción a WordPress (10:00 - 12:00)</option>
-										<option value="appinventor">App Inventor iOS y Android (11:00 - 13:00)</option>
-										<option value="scratch">Scratch 10 (11:30 - 12:30)</option>
-										<option value="hack-windows">¿Sabes lo que instalas? Hackeando Windows en minutos (12:00 - 14:00)</option>
-										<option value="jdb2">JDB2 (13:00 - 15:00)</option>
-										<option value="videojuegos">Desarrollo de videojuegos (14:00 - 16:00)</option>
-										<option value="android">Desarrollo Android (14:00 - 16:00)</option>
-										<option value="elastix">VoIP Elastix (15:00 - 18:00)</option>
-										<option value="arduino">Arduino (16:00 - 18:00)</option>
-										<option value="phonegap">Aplicaciones multiplataforma (16:00 - 18:00)</option>
+										<?php
+											while ($fila = $talleres->fetch_array()) {
+												if ($fila['ocupacion'] < $fila['cupo']) {
+													echo "<option value='". $fila['abrev'] ."'>". $fila['nombre'] ." (". date("G:i - ", strtotime($fila['horainicio'])) . date("G:i", strtotime($fila['horafin'])) .")</option>";
+												}
+											}
+										?>
 									</select>
 								</div>
 							</div>

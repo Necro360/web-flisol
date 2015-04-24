@@ -96,9 +96,7 @@
 						<div class="text-center">
 							<h2><?php echo ($ponente['organiza']); ?></h2>
 							<!-- Biografía del ponente -->
-							<p>
-								<?php echo ($ponente['biografia']); ?>
-							</p>
+							<?php echo ($ponente['biografia']); ?>
 		        			<!-- FIN Biografía del ponente -->
 						</div>
 					</div>
