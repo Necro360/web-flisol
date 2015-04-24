@@ -4,7 +4,7 @@
 
 	$mysql = new MySQL(BD_HOST, BD_USER, BD_PASS, BD_NAME);
 
-	$talleres = $mysql->ejecutar("SELECT t.nombre, t.abrev, t.horainicio, t.horafin, t.cupo, count(u.idtaller) AS ocupacion FROM talleres AS t LEFT JOIN usuariotaller AS u ON (t.id = u.idtaller) GROUP BY t.id");
+	$talleres = $mysql->ejecutar("SELECT t.nombre, t.abrev, t.horainicio, t.horafin, (t.cupo + t.sobrecupo) AS cupo, count(u.idtaller) AS ocupacion FROM talleres AS t LEFT JOIN usuariotaller AS u ON (t.id = u.idtaller) GROUP BY t.id");
 ?>
 
 <!doctype html>
